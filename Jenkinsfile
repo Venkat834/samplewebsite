@@ -4,7 +4,9 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Venkat834/samplewebsite.git'
+                git branch: "${env.BRANCH_NAME}", url: 'https://github.com/Venkat834/samplewebsite.git'
+
+
             }
         }
 
