@@ -41,6 +41,7 @@ pipeline {
     post {
         always {
             // Optional: Add cleanup steps here
+            echo 'cleanup'
         }
         success {
             // Optional: Add notifications here
