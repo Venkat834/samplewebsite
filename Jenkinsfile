@@ -85,10 +85,10 @@ pipeline {
             steps {
                 script {
                     // Stop any existing server (optional on Windows, handled gracefully)
-                    sh 'pkill -f "http-server" || true'
+                    bat 'pkill -f "http-server" || true'
 
                     // Start HTTP server (requires Node.js + http-server module)
-                    sh 'nohup npx http-server -p 3000 . > server.log 2>&1 &'
+                    bat 'nohup npx http-server -p 3000 . > server.log 2>&1 &'
 
                     echo '🚀 Your site is now running at http://localhost:3000'
                 }
