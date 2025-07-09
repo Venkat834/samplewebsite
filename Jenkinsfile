@@ -57,11 +57,6 @@
 pipeline {
     agent any
 
-    environment {
-        // Set Git Bash as shell on Windows
-        SHELL = 'C:\\Program Files\\Git\\bin\\bash.exe'
-    }
-
     stages {
         stage('Clone Repository') {
             steps {
@@ -72,10 +67,10 @@ pipeline {
         stage('Validate HTML') {
             steps {
                 script {
-                    if (!fileExists('index.html')) {
-                        error('❌ index.html file not found!')
-                    } else {
+                    if (fileExists('index.html')) {
                         echo '✅ index.html found!'
+                    } else {
+                        error('❌ index.html file not found!')
                     }
                 }
             }
@@ -84,13 +79,11 @@ pipeline {
         stage('Deploy Locally') {
             steps {
                 script {
-                    // Stop any existing server (optional on Windows, handled gracefully)
-                    bat 'pkill -f "http-server" || true'
-
-                    // Start HTTP server (requires Node.js + http-server module)
-                    bat 'nohup npx http-server -p 3000 . > server.log 2>&1 &'
-
-                    echo '🚀 Your site is now running at http://localhost:3000'
+                    bat '''
+                        taskkill /F /IM node.exe || echo "No running http-server to stop"
+                        npx http-server -p 3000
+                    '''
+                    echo '✅ Your site is now running at http://localhost:3000'
                 }
             }
         }
@@ -108,4 +101,5 @@ pipeline {
         }
     }
 }
+
 
